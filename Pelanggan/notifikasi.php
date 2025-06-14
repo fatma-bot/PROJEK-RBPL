@@ -41,7 +41,7 @@ mysqli_query($connect, $sql_mark_as_read); // Jalankan tanpa perlu cek error unt
             padding: 20px;
         }
         h1 {
-            color: #4A90E2;
+            color: #3D4EB0;
             text-align: center;
             margin-bottom: 30px;
         }
@@ -56,7 +56,7 @@ mysqli_query($connect, $sql_mark_as_read); // Jalankan tanpa perlu cek error unt
         .notification-item.unread {
             background-color: #e6f0ff; /* Latar belakang berbeda untuk notifikasi belum dibaca */
             font-weight: bold;
-            border-color: #4A90E2;
+            border-color: #3D4EB0;
         }
         .notification-message {
             font-size: 1em;
@@ -77,7 +77,7 @@ mysqli_query($connect, $sql_mark_as_read); // Jalankan tanpa perlu cek error unt
             display: block;
             width: fit-content;
             margin: 20px auto 0;
-            background-color: #4A90E2;
+            background-color: #3D4EB0;
             color: #fff;
             border: none;
             border-radius: 10px;
@@ -87,7 +87,7 @@ mysqli_query($connect, $sql_mark_as_read); // Jalankan tanpa perlu cek error unt
             transition: background-color 0.3s ease;
         }
         .back-button:hover {
-            background-color: #3a7bd5;
+            background-color:rgba(61, 78, 176, 0.85);
         }
 
         /* Responsive adjustments */

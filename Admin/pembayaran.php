@@ -2,26 +2,18 @@
 //session_start();
 require 'koneksi.php';
 
-// Ambil data pengiriman dari database
-$sql = "SELECT idPesanan, namaPemesan, alamat, jenisPengiriman FROM pesanan";
+// Ambil data pembayaran dari database
+$sql = "SELECT idPesanan, namaPemesan, alamat, totalharga FROM pesanan";
 $result = $connect->query($sql);
 
-$data_pengiriman = [];
+$data_pembayaran = [];
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $data_pengiriman[] = $row;
+        $data_pembayaran[] = $row; 
         $idPesanan = $row['idPesanan'];
-        $jenisPengiriman = $row['jenisPengiriman'];
-        if ($jenisPengiriman == "Ambil Sendiri") {
-            $sql2 = "SELECT * FROM pengambilan WHERE idPesanan = '$idPesanan'";
-            $query = mysqli_query($connect, $sql2);
-            $dataPengambilan = mysqli_fetch_array($query);
-        } else {
-            $sql1 = "SELECT * FROM pengantaran WHERE idPesanan = '$idPesanan'";
-            $query = mysqli_query($connect, $sql1);
-            $dataPengantaran = mysqli_fetch_array($query);
-            $status = $dataPengantaran['statusAntar'];
-        }
+        $sql = "SELECT * FROM pembayaran WHERE idPesanan = '$idPesanan'";
+        $query = mysqli_query($connect, $sql);
+        $data = mysqli_fetch_array($query);
     }
 }
 
@@ -206,7 +198,7 @@ if ($result->num_rows > 0) {
             }
 
             td:nth-of-type(4)::before {
-                content: "Pilihan Pengiriman";
+                content: "Pilihan pembayaran";
             }
 
             td:nth-of-type(5)::before {
@@ -223,8 +215,8 @@ if ($result->num_rows > 0) {
             <li><i class="fas fa-user icon" style="color:black;"></i> <span class="label"><a href="#" style="text-decoration: none; color:black;">Admin</a></span></li>
             <li><i class="fas fa-tachometer-alt icon" style="color:black;"></i> <span class="label"><a href="#" style="text-decoration: none; color:black;">Dashboard</a></span></li>
             <li><i class="fas fa-clipboard-list icon" style="color:black;"></i> <span class="label"><a href="#" style="text-decoration: none; color:black;">Input Pesanan</a></span></li>
-            <li style="background-color:white; color:black; border-radius:10px;"><i class="fas fa-shipping-fast icon"></i> <span class="label"><a href="pengiriman.php" style="text-decoration: none; color:black;">Pengelolaan pengiriman</a></span></li>
-            <li><i class="fas fa-wallet icon" style="color:black;"></i> <span class="label"><a href="pembayaran.php" style="text-decoration: none; color:black;">Pengelolaan Pembayaran</a></span></li>
+            <li><i class="fas fa-shipping-fast icon" style="color:black;"></i> <span class="label"><a href="pengiriman.php" style="text-decoration: none; color:black;">Pengelolaan pembayaran</a></span></li>
+            <li style="background-color:white; color:black; border-radius:10px;"><i class="fas fa-wallet icon" style="color:black;"></i> <span class="label"><a href="pembayaran.php" style="text-decoration: none; color:black;">Pengelolaan Pembayaran</a></span></li>
             <li><i class="fas fa-sign-out-alt icon" style="color:black;"></i> <span class="label"><a href="logout.php" style="text-decoration: none; color:black;">Logout</a></span></li>
         </ul>
     </div>
@@ -233,7 +225,7 @@ if ($result->num_rows > 0) {
         <div class="header">
             <div>
                 <h1>Boss Laundry</h1>
-                <h3>Data Pengambilan Pesanan</h3>
+                <h3>Data Pembayaran Pesanan</h3>
             </div>
         </div>
         <table>
@@ -242,78 +234,49 @@ if ($result->num_rows > 0) {
                     <th>No Pesanan</th>
                     <th>Nama Pemesan</th>
                     <th>Alamat</th>
-                    <th>Pilihan Pengiriman</th>
+                    <th>Jumlah Pembayaran</th>
+                    <th>Tanggal Bayar</th>
                     <th>Status</th>
-                    <th>Unduh Bukti</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                if(!empty($data_pengiriman)) {
-                    foreach ($data_pengiriman as $row) { ?>
+                if(!empty($data_pembayaran)) {
+                    foreach ($data_pembayaran as $row) { ?>
                         <tr>
                             <td><?php echo $row['idPesanan']; ?></td>
                             <td><?php echo $row['namaPemesan']; ?></td>
                             <td><?php echo $row['alamat']; ?></td>
-                            <td><?php echo $row['jenisPengiriman']; ?></td>
+                            <td><?php echo $row['totalharga']; ?></td>
                             <td><?php 
                                 $idPesanan = $row['idPesanan'];
-                                if($row['jenisPengiriman'] == "Ambil Sendiri") {
-                                    $sql3 = "SELECT * FROM pengambilan WHERE idPesanan = '$idPesanan'";
-                                    $query3 = mysqli_query($connect, $sql3);
-                                    $dataPengambilan = mysqli_fetch_array($query3);
-                                    $status = $dataPengambilan['statusAmbil'];
-                                    $tanda = $dataPengambilan['tandaPengambilan'];
-                                    if($status == "diproses") { ?>
-                                        <a href="update_pengiriman.php?id=<?php echo $idPesanan; ?>" class="status-button" style="text-decoration: none">
-                                        <i class="fas fa-sync-alt icon"></i> Update
-                                        </a>
-                                    <?php }
-                                    else {
-                                        echo "diambil";
-                                    }
+                                $sql2 = "SELECT * FROM pembayaran WHERE idPesanan = '$idPesanan'";
+                                $query2 = mysqli_query($connect, $sql2);
+                                $dataPembayaran = mysqli_fetch_array($query2);
+                                $tanggalbayar = $dataPembayaran['tglPembayaran'];
+                                echo $tanggalbayar; ?>
+                            </td>
+                            <td> <?php
+                                $idPesanan = $row['idPesanan'];
+                                $sql2 = "SELECT * FROM pembayaran WHERE idPesanan = '$idPesanan'";
+                                $query2 = mysqli_query($connect, $sql2);
+                                $dataPembayaran = mysqli_fetch_array($query2);
+                                $statusbayar = $dataPembayaran['statusPembayaran'];
+                                if($statusbayar == "belum bayar") {?>
+                                    <a href="update_pembayaran.php?id=<?php echo $idPesanan; ?>" class="status-button" style="text-decoration: none">
+                                    <i class="fas fa-sync-alt icon"></i> Update
+                                    </a> <?php
                                 }
                                 else {
-                                    $sql4 = "SELECT * FROM pengantaran WHERE idPesanan = '$idPesanan'";
-                                    $query4 = mysqli_query($connect, $sql4);
-                                    $dataPengantaran = mysqli_fetch_array($query4);
-                                    $status = $dataPengantaran['statusAntar'];
-                                    echo $status;
+                                    echo "dibayar";
                                 } ?>
-                            </td>
-                            <td><?php
-                                $idPesanan = $row['idPesanan'];
-                                if($row['jenisPengiriman'] == "Ambil Sendiri") {
-                                    $sql5 = "SELECT * FROM pengambilan WHERE idPesanan = '$idPesanan'";
-                                    $query5 = mysqli_query($connect, $sql5);
-                                    $dataPengambilan = mysqli_fetch_array($query5);
-                                    $tanda = $dataPengambilan['tandaPengambilan'];
-                                    if(!empty($tanda)) {
-                                        echo "<a href='download_gambar.php?file=" . urlencode($tanda) . "' class='download-button'>Unduh Disini</a>";
-                                    }
-                                    else if(empty($tanda)) {
-                                        echo "pesanan belum diambil";
-                                    }
-                                }
-                                else if($row['jenisPengiriman'] == "Kurir") {
-                                    $sql5 = "SELECT * FROM pengantaran WHERE idPesanan = '$idPesanan'";
-                                    $query5 = mysqli_query($connect, $sql5);
-                                    $dataPengantaran = mysqli_fetch_array($query5);
-                                    $tanda = $dataPengantaran['tandaPengantaran'];
-                                    if(!empty($tanda)) {
-                                        echo "<a href='download_gambar.php?file=" . urlencode($tanda) . "' class='download-button'>Unduh Disini</a>";
-                                    }
-                                    else if(empty($tanda)) {
-                                        echo "pesanan belum diantar";
-                                    }
-                                }?>
                             </td>
                         </tr>
                     <?php
                     }
                 }  
                 else {
-                    echo "<tr><td colspan='6'>Tidak ada data pengiriman.</td></tr>";
+                    echo "<tr><td colspan='6'>Tidak ada data pembayaran.</td></tr>";
                 }
                 ?>
             </tbody>

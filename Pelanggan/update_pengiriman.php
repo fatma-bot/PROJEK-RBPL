@@ -14,7 +14,23 @@ if(ISSET($_POST['submit'])) {
     $query6 = mysqli_query($connect, $sql6);
     $data = mysqli_fetch_array($query6);
     $totalBayar = $data['totalharga'];
-    $statusPesanan = 'On Process';
+    $sql7 = "SELECT * FROM pembayaran WHERE idPesanan = '$idPesanan'";
+    $query7 = mysqli_query($connect, $sql7);
+    $dataPembayaran = mysqli_fetch_array($query7);
+    $statusPembayaran = $dataPembayaran['statusPembayaran'];
+    if(!empty($statusPembayaran)) {
+        if($statusPembayaran == 'belum bayar') {
+            $statusPesanan = 'diproses';
+        }
+        else if ($statusPembayaran == 'dibayar'){
+            $statusPesanan = 'selesai';
+        }
+    }
+    else {
+        $statusPesanan = 'diproses';
+    }
+    
+    
     $statusPembayaran = "belum bayar";
     $sql = "UPDATE pesanan SET jenisPengiriman = '$jenisPengiriman', statusPesanan = '$statusPesanan' WHERE idPesanan = '$idPesanan'";
     $query = mysqli_query($connect, $sql);

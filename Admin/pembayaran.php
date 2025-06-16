@@ -9,7 +9,7 @@ $result = $connect->query($sql);
 $data_pembayaran = [];
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $data_pembayaran[] = $row; 
+        $data_pembayaran[] = $row;
         $idPesanan = $row['idPesanan'];
         $sql = "SELECT * FROM pembayaran WHERE idPesanan = '$idPesanan'";
         $query = mysqli_query($connect, $sql);
@@ -215,7 +215,7 @@ if ($result->num_rows > 0) {
             <li><i class="fas fa-user icon" style="color:black;"></i> <span class="label"><a href="#" style="text-decoration: none; color:black;">Admin</a></span></li>
             <li><i class="fas fa-tachometer-alt icon" style="color:black;"></i> <span class="label"><a href="#" style="text-decoration: none; color:black;">Dashboard</a></span></li>
             <li><i class="fas fa-clipboard-list icon" style="color:black;"></i> <span class="label"><a href="#" style="text-decoration: none; color:black;">Input Pesanan</a></span></li>
-            <li><i class="fas fa-shipping-fast icon" style="color:black;"></i> <span class="label"><a href="pengiriman.php" style="text-decoration: none; color:black;">Pengelolaan pembayaran</a></span></li>
+            <li><i class="fas fa-shipping-fast icon" style="color:black;"></i> <span class="label"><a href="pengiriman.php" style="text-decoration: none; color:black;">Pengelolaan pengiriman</a></span></li>
             <li style="background-color:white; color:black; border-radius:10px;"><i class="fas fa-wallet icon" style="color:black;"></i> <span class="label"><a href="pembayaran.php" style="text-decoration: none; color:black;">Pengelolaan Pembayaran</a></span></li>
             <li><i class="fas fa-sign-out-alt icon" style="color:black;"></i> <span class="label"><a href="logout.php" style="text-decoration: none; color:black;">Logout</a></span></li>
         </ul>
@@ -237,18 +237,19 @@ if ($result->num_rows > 0) {
                     <th>Jumlah Pembayaran</th>
                     <th>Tanggal Bayar</th>
                     <th>Status</th>
+                    <th>Unduh Bukti</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                if(!empty($data_pembayaran)) {
+                if (!empty($data_pembayaran)) {
                     foreach ($data_pembayaran as $row) { ?>
                         <tr>
                             <td><?php echo $row['idPesanan']; ?></td>
                             <td><?php echo $row['namaPemesan']; ?></td>
                             <td><?php echo $row['alamat']; ?></td>
                             <td><?php echo $row['totalharga']; ?></td>
-                            <td><?php 
+                            <td><?php
                                 $idPesanan = $row['idPesanan'];
                                 $sql2 = "SELECT * FROM pembayaran WHERE idPesanan = '$idPesanan'";
                                 $query2 = mysqli_query($connect, $sql2);
@@ -257,25 +258,36 @@ if ($result->num_rows > 0) {
                                 echo $tanggalbayar; ?>
                             </td>
                             <td> <?php
-                                $idPesanan = $row['idPesanan'];
-                                $sql2 = "SELECT * FROM pembayaran WHERE idPesanan = '$idPesanan'";
-                                $query2 = mysqli_query($connect, $sql2);
-                                $dataPembayaran = mysqli_fetch_array($query2);
-                                $statusbayar = $dataPembayaran['statusPembayaran'];
-                                if($statusbayar == "belum bayar") {?>
+                                    $idPesanan = $row['idPesanan'];
+                                    $sql3 = "SELECT * FROM pembayaran WHERE idPesanan = '$idPesanan'";
+                                    $query3 = mysqli_query($connect, $sql3);
+                                    $dataPembayaran1 = mysqli_fetch_array($query3);
+                                    $statusbayar1 = $dataPembayaran1['statusPembayaran'];
+                                    if ($statusbayar1 == "belum bayar") { ?>
                                     <a href="update_pembayaran.php?id=<?php echo $idPesanan; ?>" class="status-button" style="text-decoration: none">
-                                    <i class="fas fa-sync-alt icon"></i> Update
+                                        <i class="fas fa-sync-alt icon"></i> Update
                                     </a> <?php
-                                }
-                                else {
-                                    echo "dibayar";
-                                } ?>
+                                        } else {
+                                            echo "dibayar";
+                                        } ?>
+                            </td>
+                            <td> <?php
+                                    $idPesanan = $row['idPesanan'];
+                                    $sql5 = "SELECT * FROM pembayaran WHERE idPesanan = '$idPesanan'";
+                                    $query5 = mysqli_query($connect, $sql5);
+                                    $dataPembayaran = mysqli_fetch_array($query5);
+                                    $tanda = $dataPembayaran['tandaPembayaran'];
+                                    if (!empty($tanda)) {
+                                        echo "<a href='download_gambar.php?file=" . urlencode($tanda) . "' class='download-button'>Unduh Disini</a>";
+                                    } else if (empty($tanda)) {
+                                        echo "pesanan belum dibayar";
+                                    }
+                                    ?>
                             </td>
                         </tr>
-                    <?php
+                <?php
                     }
-                }  
-                else {
+                } else {
                     echo "<tr><td colspan='6'>Tidak ada data pembayaran.</td></tr>";
                 }
                 ?>

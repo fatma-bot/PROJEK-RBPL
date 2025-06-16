@@ -6,13 +6,6 @@ if(empty($_SESSION['noHp'])) {
     header('location:login.php?message=belum_login');
     exit();
 }
-$orders = [
-    ['type' => 'Cuci Setrika', 'location' => 'Muara Karang', 'datetime' => '10 April 2025, 10:22 AM', 'price' => 110000, 'status' => 'On Process'],
-    ['type' => 'Cuci Kering', 'location' => 'Muara Karang', 'datetime' => '10 April 2025, 10:45 AM', 'price' => 100000, 'status' => 'On Process'],
-    ['type' => 'Cuci Kering', 'location' => 'Muara Karang', 'datetime' => '10 April 2025, 07:00 AM', 'price' => 70000, 'status' => 'Completed'],
-    ['type' => 'Cuci Kering', 'location' => 'Muara Karang', 'datetime' => '05 April 2025, 09:30 AM', 'price' => 150000, 'status' => 'Completed'],
-    ['type' => 'Cuci Setrika', 'location' => 'Muara Karang', 'datetime' => '05 April 2025, 07:25 AM', 'price' => 80000, 'status' => 'Completed'],
-];
 
 $noHp = $_SESSION['noHp'];
 $sql = "SELECT * FROM pelanggan WHERE noHp = '$noHp'";
@@ -129,12 +122,12 @@ $query2 = mysqli_query($connect, $sql2);
       text-align: center;
     }
 
-    .status-OnProcess {
+    .status-diproses {
       background-color: #eaf1ff;
       color: #2f56c5;
     }
 
-    .status-completed {
+    .status-selesai {
       background-color: #e1f7e8;
       color: #2e9c4f;
     }
@@ -207,7 +200,7 @@ $query2 = mysqli_query($connect, $sql2);
                 <span class="order-price">Rp ' . number_format($row['totalharga'], 0, ',', '.') . '</span>
               </div>
               <div class="order-meta">
-                <div class="order-status ' . ($row['statusPesanan'] == 'Completed' ? 'status-completed' : 'status-OnProcess') . '">' . htmlspecialchars($row['statusPesanan']) . '</div>
+                <div class="order-status ' . ($row['statusPesanan'] == 'selesai' ? 'status-selesai' : 'status-diproses') . '">' . htmlspecialchars($row['statusPesanan']) . '</div>
               </div>
             </div>';
     }
@@ -227,7 +220,7 @@ $query2 = mysqli_query($connect, $sql2);
                 <span class="order-price">Rp ' . number_format($row['totalharga'], 0, ',', '.') . '</span>
               </div>
               <div class="order-meta">
-                <div class="order-status ' . ($row['statusPesanan'] == 'Completed' ? 'status-completed' : 'status-OnProcess') . '">' . htmlspecialchars($row['statusPesanan']) . '</div>
+                <div class="order-status ' . ($row['statusPesanan'] == 'selesai' ? 'status-selesai' : 'status-diproses') . '">' . htmlspecialchars($row['statusPesanan']) . '</div>
               </div>
             </div>';
     }

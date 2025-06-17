@@ -11,11 +11,7 @@ $data = mysqli_fetch_array($query);
 $name = $data['namaPelanggan'];
 $alamat = $data['kabupaten'];
 
-// Ambil jumlah notifikasi yang belum dibaca
-$sql_unread_notifs = "SELECT COUNT(*) AS total_unread FROM notifikasi WHERE noHp = '$noHp' AND is_read = FALSE";
-$query_unread_notifs = mysqli_query($connect, $sql_unread_notifs);
-$unread_data = mysqli_fetch_assoc($query_unread_notifs);
-$totalUnreadNotifs = $unread_data['total_unread'];
+
 ?>
 
 <!DOCTYPE html>
@@ -186,15 +182,6 @@ $totalUnreadNotifs = $unread_data['total_unread'];
 
   <div class="header">
     <div class="greeting">Hello, <?= $name ?>!</div>
-    <div class="icons">
-        <a href="notifikasi.php" class="notification-bell">
-      <i class="fas fa-bell">
-                 <?php if ($totalUnreadNotifs > 0): ?>
-                    <span class="notification-count"><?php echo $totalUnreadNotifs; ?></span>
-                <?php endif; ?>
-                </i>
-            </a> 
-    </div>
   </div>
 
   <div class="location-box">

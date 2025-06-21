@@ -1,5 +1,10 @@
 <?php
-//session_start();
+session_start();
+if (!isset($_SESSION['idAdmin'])) {
+    header("Location: login.php");
+    exit;
+}
+
 require 'koneksi.php';
 
 // Ambil data pembayaran dari database
@@ -212,9 +217,9 @@ if ($result->num_rows > 0) {
     <div class="sidebar" id="sidebar">
         <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
         <ul>
-            <li><i class="fas fa-user icon" style="color:black;"></i> <span class="label"><a href="#" style="text-decoration: none; color:black;">Admin</a></span></li>
-            <li><i class="fas fa-tachometer-alt icon" style="color:black;"></i> <span class="label"><a href="#" style="text-decoration: none; color:black;">Dashboard</a></span></li>
-            <li><i class="fas fa-clipboard-list icon" style="color:black;"></i> <span class="label"><a href="#" style="text-decoration: none; color:black;">Input Pesanan</a></span></li>
+            <li><i class="fas fa-user icon" style="color:black;"></i> <span class="label"><a href="profil.php" style="text-decoration: none; color:black;">Admin</a></span></li>
+            <li><i class="fas fa-tachometer-alt icon" style="color:black;"></i> <span class="label"><a href="index.php" style="text-decoration: none; color:black;">Dashboard</a></span></li>
+            <li><i class="fas fa-clipboard-list icon" style="color:black;"></i> <span class="label"><a href="input_pesanan.php" style="text-decoration: none; color:black;">Input Pesanan</a></span></li>
             <li><i class="fas fa-shipping-fast icon" style="color:black;"></i> <span class="label"><a href="pengiriman.php" style="text-decoration: none; color:black;">Pengelolaan pengiriman</a></span></li>
             <li style="background-color:white; color:black; border-radius:10px;"><i class="fas fa-wallet icon" style="color:black;"></i> <span class="label"><a href="pembayaran.php" style="text-decoration: none; color:black;">Pengelolaan Pembayaran</a></span></li>
             <li><i class="fas fa-sign-out-alt icon" style="color:black;"></i> <span class="label"><a href="logout.php" style="text-decoration: none; color:black;">Logout</a></span></li>
@@ -263,12 +268,12 @@ if ($result->num_rows > 0) {
                                     $query3 = mysqli_query($connect, $sql3);
                                     $dataPembayaran1 = mysqli_fetch_array($query3);
                                     $statusbayar1 = $dataPembayaran1['statusPembayaran'];
-                                    if ($statusbayar1 == "belum bayar") { ?>
+                                    if ($statusbayar1 == "Belum Bayar") { ?>
                                     <a href="update_pembayaran.php?id=<?php echo $idPesanan; ?>" class="status-button" style="text-decoration: none">
                                         <i class="fas fa-sync-alt icon"></i> Update
                                     </a> <?php
                                         } else {
-                                            echo "dibayar";
+                                            echo "Dibayar";
                                         } ?>
                             </td>
                             <td> <?php
@@ -280,7 +285,7 @@ if ($result->num_rows > 0) {
                                     if (!empty($tanda)) {
                                         echo "<a href='download_gambar.php?file=" . urlencode($tanda) . "' class='download-button'>Unduh Disini</a>";
                                     } else if (empty($tanda)) {
-                                        echo "pesanan belum dibayar";
+                                        echo "tidak ada bukti pembayaran";
                                     }
                                     ?>
                             </td>

@@ -365,7 +365,7 @@ $lokasi_pickup = $kabupaten;
             <form id="" action="update_pengiriman.php" method="POST"> <input type="hidden" name="idPesanan" value="<?php echo htmlspecialchars($idPesanan); ?>">
 
                 <div class="delivery-option-wrapper">
-                    <input type="radio" id="self_pick_up" name="jenisPengiriman" value="Ambil Sendiri" <?php echo ($pesanan['jenisPengiriman'] == 'Ambil Sendiri') ? 'checked' : ''; ?>>
+                    <input type="radio" id="self_pick_up" name="jenisPengiriman" value="Ambil sendiri" <?php echo ($pesanan['jenisPengiriman'] == 'Ambil sendiri') ? 'checked' : ''; ?>>
                     <label for="self_pick_up" class="delivery-option-label">
                         <i class="fas fa-store"></i>
                         <span>Self Pick-Up</span>

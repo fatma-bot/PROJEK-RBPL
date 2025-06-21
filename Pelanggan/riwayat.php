@@ -122,12 +122,12 @@ $query2 = mysqli_query($connect, $sql2);
       text-align: center;
     }
 
-    .status-diproses {
+    .status-Diproses {
       background-color: #eaf1ff;
       color: #2f56c5;
     }
 
-    .status-selesai {
+    .status-Selesai {
       background-color: #e1f7e8;
       color: #2e9c4f;
     }
@@ -200,7 +200,7 @@ $query2 = mysqli_query($connect, $sql2);
                 <span class="order-price">Rp ' . number_format($row['totalharga'], 0, ',', '.') . '</span>
               </div>
               <div class="order-meta">
-                <div class="order-status ' . ($row['statusPesanan'] == 'selesai' ? 'status-selesai' : 'status-diproses') . '">' . htmlspecialchars($row['statusPesanan']) . '</div>
+                <div class="order-status ' . ($row['statusPesanan'] == 'Selesai' ? 'status-Selesai' : 'status-Diproses') . '">' . htmlspecialchars($row['statusPesanan']) . '</div>
               </div>
             </div>';
     }
@@ -220,7 +220,7 @@ $query2 = mysqli_query($connect, $sql2);
                 <span class="order-price">Rp ' . number_format($row['totalharga'], 0, ',', '.') . '</span>
               </div>
               <div class="order-meta">
-                <div class="order-status ' . ($row['statusPesanan'] == 'selesai' ? 'status-selesai' : 'status-diproses') . '">' . htmlspecialchars($row['statusPesanan']) . '</div>
+                <div class="order-status ' . ($row['statusPesanan'] == 'Selesai' ? 'status-Selesai' : 'status-Diproses') . '">' . htmlspecialchars($row['statusPesanan']) . '</div>
               </div>
             </div>';
     }

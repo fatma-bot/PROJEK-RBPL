@@ -1,6 +1,11 @@
 <?php
 // Pastikan tidak ada spasi atau karakter di luar tag PHP pembuka/penutup
 // agar tidak ada output header yang tidak diinginkan sebelum pengaturan header()
+session_start();
+if (!isset($_SESSION['idAdmin'])) {
+    header("Location: login.php");
+    exit;
+}
 
 if (isset($_GET['file'])) {
     $fileName = basename(urldecode($_GET['file'])); // Ambil nama file dari URL, decode, dan bersihkan

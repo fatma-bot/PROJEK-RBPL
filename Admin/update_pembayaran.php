@@ -1,4 +1,10 @@
 <?php
+session_start();
+if (!isset($_SESSION['idAdmin'])) {
+    header("Location: login.php");
+    exit;
+}
+
 require 'koneksi.php';
 $today = date("Y-m-d");
 $idPesanan = $_GET['id'];

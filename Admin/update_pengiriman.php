@@ -1,4 +1,10 @@
 <?php
+session_start();
+if (!isset($_SESSION['idAdmin'])) {
+    header("Location: login.php");
+    exit;
+}
+
 require 'koneksi.php';
 $today = date("Y-m-d");
 $idPesanan = $_GET['id'];
@@ -6,7 +12,7 @@ $query = "SELECT * FROM pesanan WHERE idPesanan = '$idPesanan'";
 $result = mysqli_query($connect, $query);
 $data = mysqli_fetch_array($result);
 $jenisPengiriman = $data['jenisPengiriman'];
-        if($jenisPengiriman == "Ambil Sendiri") {
+        if($jenisPengiriman == "Ambil sendiri") {
             $sql2 = "SELECT * FROM pengambilan WHERE idPesanan = '$idPesanan'";
             $query = mysqli_query($connect, $sql2);
             $dataPengambilan = mysqli_fetch_array($query);

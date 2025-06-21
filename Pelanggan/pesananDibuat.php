@@ -166,7 +166,7 @@ $jenisPengiriman = $data2['jenisPengiriman'];
         <button class="close-button" onclick="window.location.href='dashboard.php'">&times;</button>
         <?php 
         //var_dump($jenisPengiriman);
-        if($jenisPengiriman == 'Ambil Sendiri') { ?>
+        if($jenisPengiriman == 'Ambil sendiri') { ?>
             <h2>Pesanan Berhasil Dibuat!</h2>
             <p>Sekarang tinggal antar pakaianmu ke kasir di toko laundry, ya!</p>
         <?php } 

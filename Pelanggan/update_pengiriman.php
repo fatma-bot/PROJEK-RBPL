@@ -19,23 +19,23 @@ if(ISSET($_POST['submit'])) {
     $dataPembayaran = mysqli_fetch_array($query7);
     $statusPembayaran = $dataPembayaran['statusPembayaran'];
     if(!empty($statusPembayaran)) {
-        if($statusPembayaran == 'belum bayar') {
-            $statusPesanan = 'diproses';
+        if($statusPembayaran == 'Belum Bayar') {
+            $statusPesanan = 'Diproses';
         }
-        else if ($statusPembayaran == 'dibayar'){
-            $statusPesanan = 'selesai';
+        else if ($statusPembayaran == 'Dibayar'){
+            $statusPesanan = 'Selesai';
         }
     }
     else {
-        $statusPesanan = 'diproses';
+        $statusPesanan = 'Diproses';
     }
     
     
-    $statusPembayaran = "belum bayar";
+    $statusPembayaran = "Belum Bayar";
     $sql = "UPDATE pesanan SET jenisPengiriman = '$jenisPengiriman', statusPesanan = '$statusPesanan' WHERE idPesanan = '$idPesanan'";
     $query = mysqli_query($connect, $sql);
-    if($jenisPengiriman == "Ambil Sendiri") {
-        $sql1 = "INSERT INTO pengambilan (idAmbil, idPesanan, statusAmbil) VALUES ('', '$idPesanan', 'diproses')";
+    if($jenisPengiriman == "Ambil sendiri") {
+        $sql1 = "INSERT INTO pengambilan (idAmbil, idPesanan, statusAmbil) VALUES ('', '$idPesanan', 'Diproses')";
         $query1 = mysqli_query($connect, $sql1);
     }
     else {

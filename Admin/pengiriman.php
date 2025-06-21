@@ -1,5 +1,10 @@
 <?php
-//session_start();
+session_start();
+if (!isset($_SESSION['idAdmin'])) {
+    header("Location: login.php");
+    exit;
+}
+
 require 'koneksi.php';
 
 // Ambil data pengiriman dari database
@@ -12,7 +17,7 @@ if ($result->num_rows > 0) {
         $data_pengiriman[] = $row;
         $idPesanan = $row['idPesanan'];
         $jenisPengiriman = $row['jenisPengiriman'];
-        if ($jenisPengiriman == "Ambil Sendiri") {
+        if ($jenisPengiriman == "Ambil sendiri") {
             $sql2 = "SELECT * FROM pengambilan WHERE idPesanan = '$idPesanan'";
             $query = mysqli_query($connect, $sql2);
             $dataPengambilan = mysqli_fetch_array($query);
@@ -220,9 +225,9 @@ if ($result->num_rows > 0) {
     <div class="sidebar" id="sidebar">
         <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
         <ul>
-            <li><i class="fas fa-user icon" style="color:black;"></i> <span class="label"><a href="#" style="text-decoration: none; color:black;">Admin</a></span></li>
-            <li><i class="fas fa-tachometer-alt icon" style="color:black;"></i> <span class="label"><a href="#" style="text-decoration: none; color:black;">Dashboard</a></span></li>
-            <li><i class="fas fa-clipboard-list icon" style="color:black;"></i> <span class="label"><a href="#" style="text-decoration: none; color:black;">Input Pesanan</a></span></li>
+            <li><i class="fas fa-user icon" style="color:black;"></i> <span class="label"><a href="profil.php" style="text-decoration: none; color:black;">Admin</a></span></li>
+            <li><i class="fas fa-tachometer-alt icon" style="color:black;"></i> <span class="label"><a href="index.php" style="text-decoration: none; color:black;">Dashboard</a></span></li>
+            <li><i class="fas fa-clipboard-list icon" style="color:black;"></i> <span class="label"><a href="input_pesanan.php" style="text-decoration: none; color:black;">Input Pesanan</a></span></li>
             <li style="background-color:white; color:black; border-radius:10px;"><i class="fas fa-shipping-fast icon"></i> <span class="label"><a href="pengiriman.php" style="text-decoration: none; color:black;">Pengelolaan pengiriman</a></span></li>
             <li><i class="fas fa-wallet icon" style="color:black;"></i> <span class="label"><a href="pembayaran.php" style="text-decoration: none; color:black;">Pengelolaan Pembayaran</a></span></li>
             <li><i class="fas fa-sign-out-alt icon" style="color:black;"></i> <span class="label"><a href="logout.php" style="text-decoration: none; color:black;">Logout</a></span></li>
@@ -258,13 +263,13 @@ if ($result->num_rows > 0) {
                             <td><?php echo $row['jenisPengiriman']; ?></td>
                             <td><?php 
                                 $idPesanan = $row['idPesanan'];
-                                if($row['jenisPengiriman'] == "Ambil Sendiri") {
+                                if($row['jenisPengiriman'] == "Ambil sendiri") {
                                     $sql3 = "SELECT * FROM pengambilan WHERE idPesanan = '$idPesanan'";
                                     $query3 = mysqli_query($connect, $sql3);
                                     $dataPengambilan = mysqli_fetch_array($query3);
                                     $status = $dataPengambilan['statusAmbil'];
                                     $tanda = $dataPengambilan['tandaPengambilan'];
-                                    if($status == "diproses") { ?>
+                                    if($status == "Diproses") { ?>
                                         <a href="update_pengiriman.php?id=<?php echo $idPesanan; ?>" class="status-button" style="text-decoration: none">
                                         <i class="fas fa-sync-alt icon"></i> Update
                                         </a>
@@ -283,7 +288,7 @@ if ($result->num_rows > 0) {
                             </td>
                             <td><?php
                                 $idPesanan = $row['idPesanan'];
-                                if($row['jenisPengiriman'] == "Ambil Sendiri") {
+                                if($row['jenisPengiriman'] == "Ambil sendiri") {
                                     $sql5 = "SELECT * FROM pengambilan WHERE idPesanan = '$idPesanan'";
                                     $query5 = mysqli_query($connect, $sql5);
                                     $dataPengambilan = mysqli_fetch_array($query5);
@@ -304,7 +309,7 @@ if ($result->num_rows > 0) {
                                         echo "<a href='download_gambar.php?file=" . urlencode($tanda) . "' class='download-button'>Unduh Disini</a>";
                                     }
                                     else if(empty($tanda)) {
-                                        echo "pesanan belum diantar";
+                                        echo "tidak ada bukti pengantaran";
                                     }
                                 }?>
                             </td>

@@ -1,11 +1,17 @@
 <?php
+session_start();
+if (!isset($_SESSION['idAdmin'])) {
+    header("Location: login.php");
+    exit;
+}
+
 require 'koneksi.php';
 $idPesanan = $_GET['id'];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $tglPembayaran = $_POST['tglPembayaran'];
-    $statusPembayaran = "dibayar";
-    $statusPesanan = "selesai";
+    $statusPembayaran = "Dibayar";
+    $statusPesanan = "Selesai";
     $sql = "UPDATE pesanan SET statusPesanan = '$statusPesanan' WHERE idPesanan = '$idPesanan'";
     $query = mysqli_query($connect, $sql);
     $folder = "uploads/";
